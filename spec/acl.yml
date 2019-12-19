@@ -1,0 +1,329 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://api.jamma.cn/acl
+info:
+  version: "1.0.0"
+  title: jm-acl-api
+  description: ACL API
+paths:
+  /areAnyRolesAllowed:
+    get:
+      summary: 检查指定角色是否有权限访问
+      description: 指定角色中任意角色对于指定资源有指定权限，就返回true，否则返回false
+      parameters:
+        - name: roles
+          in: query
+          schema:
+            type: string
+        - name: resource
+          in: query
+          schema:
+            type: string
+        - name: permissions
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /isAllowed:
+    get:
+      summary: 检查指定用户是否有权限访问
+      description: 指定用户对于指定资源有指定权限，就返回true，否则返回false
+      parameters:
+        - name: user
+          in: query
+          schema:
+            type: string
+        - name: resource
+          in: query
+          schema:
+            type: string
+        - name: permissions
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /permissions:
+    get:
+      summary: 获取权限列表
+      parameters:
+        - name: fields
+          description: 指定需要返回的字段，默认全部返回
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permissions'
+    post:
+      summary: 保存权限
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Permissions'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 清空权限，恢复默认值
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /resources:
+    get:
+      summary: 获取资源列表
+      parameters:
+        - name: fields
+          description: 指定需要返回的字段，默认全部返回
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resources'
+    post:
+      summary: 保存资源
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resources'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 清空资源，恢复默认值
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /roles:
+    get:
+      summary: 获取角色列表
+      parameters:
+        - name: fields
+          description: 指定需要返回的字段，默认全部返回
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roles'
+    post:
+      summary: 保存角色
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Roles'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 清空角色，恢复默认值
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /roles/{id}/resources:
+      get:
+        summary: 获取指定角色的资源列表
+        parameters:
+          - name: id
+            in: path
+            description: 角色
+            schema:
+              type: string
+        responses:
+          '200':
+            description: 返回结果
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Resources'
+  /users:
+    get:
+      summary: 获取用户列表
+      parameters:
+        - name: fields
+          description: 指定需要返回的字段，默认全部返回
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+    post:
+      summary: 新建用户
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      summary: 获取用户信息
+      parameters:
+        - name: id
+          in: path
+          description: 用户Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      summary: 更新用户
+      parameters:
+        - name: id
+          in: path
+          description: 用户Id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 删除用户
+      parameters:
+        - name: id
+          in: path
+          description: 用户Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /users/{id}/roles:
+    get:
+      summary: 获取指定用户角色列表
+      parameters:
+        - name: id
+          in: path
+          description: 用户Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roles'
+components:
+  schemas:
+    Ret:
+      type: object
+      properties:
+        ret:
+          type: integer
+          format: int32
+          example: 0
+          description: 0 失败 1 成功
+    Permissions:
+      type: object
+      properties:
+        rows:
+          type: array
+          example: []
+          description: 权限列表
+    Resources:
+      type: object
+      properties:
+        rows:
+          type: array
+          example: []
+          description: 资源列表
+    Roles:
+      type: object
+      properties:
+        rows:
+          type: array
+          example: []
+          description: 角色列表
+    User:
+      type: object
+      description: 用户
+    Users:
+      type: object
+      properties:
+        rows:
+          type: array
+          example: []
+          description: 用户列表

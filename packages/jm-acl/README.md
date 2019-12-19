@@ -20,13 +20,25 @@ theme : "white"
 
 - 用户 user
 
-- 角色 role, 支持角色继承和用户自定义角色
+- 角色 role, 支持角色继承
 
 - 资源 resource, 支持资源树
 
 - 权限 permission
 
 - 存储 redis 
+
+---
+
+## 实现原理
+
+- load和save方法，从redis加载或保存Acl配置
+
+- 调用validateAclConfig, 只要配置有任何变化，进入下面的步骤。
+
+- 基于node-acl库的memoryBackend，动态生成acl对象
+
+- 基于资源树创建鉴权路由，实现areAnyRolesAllowed, isAllowed方法
 
 ---
 
@@ -47,11 +59,3 @@ theme : "white"
 |gateway||Gateway服务器Uri|
 |service_name|'acl'|jaeger服务器Uri|
 |jaeger||jaeger服务器Uri|
-
-## jm-acl
-
-鉴权库
-
-## main
-
-鉴权服务，依赖jm-acl
