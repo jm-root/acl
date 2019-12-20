@@ -44,7 +44,7 @@ module.exports = function (model) {
 
   async function updateOne ({ data, params: { id } }) {
     id && (id = decodeURIComponent(id))
-    return model.update(id, data)
+    return model.createOrUpdate({ ...data, id })
   }
 
   async function deleteOne ({ params: { id } }) {
