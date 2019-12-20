@@ -19,4 +19,10 @@ describe('router', () => {
     console.log(doc)
     expect(doc).toBeTruthy()
   })
+
+  test('put /users/:id', async () => {
+    const doc = await router.put(`/users/abc`, { nick: 'test', roles: ['root'] })
+    console.log(doc)
+    expect(doc).toBeTruthy()
+  })
 })

@@ -1,6 +1,7 @@
 const error = require('jm-err')
 const { Err } = error
 const Model = require('./hmodel')
+const { split } = require('../utils')
 
 class UserRole {
   constructor ({ service }) {
@@ -66,7 +67,8 @@ module.exports = class User extends Model {
 
   async onCU (opts) {
     const { userRole } = this
-    const { id, roles = [] } = opts
+    let { id, roles = [] } = opts
+    if (!Array.isArray(roles)) roles = split(roles)
     await userRole.setRoles(id, roles)
     opts.roles = await userRole.roles(id)
   }

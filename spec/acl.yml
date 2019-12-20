@@ -236,7 +236,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
     put:
-      summary: 更新用户
+      summary: 更新用户, 如果用户不存在，则自动新建用户
       parameters:
         - name: id
           in: path
