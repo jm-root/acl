@@ -3,6 +3,7 @@ const { EventEmitter } = require('jm-event')
 const error = require('jm-err')
 const { Err } = error
 const { split } = require('../utils')
+const { validateAclConfig } = require('./validate')
 
 /**
  * 数据模型redis value，提供CRUD操作
@@ -48,11 +49,15 @@ module.exports = class Model extends EventEmitter {
    * @returns {Promise<*>}
    */
   async save (opts, keySuffix) {
-    let { service, service: { redis }, key } = this
+    let { service, service: { redis, aclConfig }, key } = this
     keySuffix && (key = `${key}:${keySuffix}`)
     if (!this.validate(opts)) throw error.err(Err.FA_VALIDATION)
     const doc = await redis.set(key, JSON.stringify(opts))
-    service.emit('acl.update', key)
+    aclConfig[`${this.name}s`] = opts
+    validateAclConfig(service)
+    try {
+      service.emit('acl.update', { name: this.name, key })
+    } catch (e) {}
     return doc
   }
 

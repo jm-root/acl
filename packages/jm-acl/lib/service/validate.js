@@ -73,25 +73,35 @@ async function validateRoles (service) {
   const { aclConfig: { resources, roles }, fingerprints } = service
   _compareRoles(resources, roles)
   const key = fingerprint(roles)
-  if (key === fingerprints.roles) return // 无变化
+  if (key === fingerprints.roles) return false// 无变化
   fingerprints.roles = key
   await _createAcl(service)
   logger.info(`roles changed.`)
+  return true
 }
 
 /**
  * 检查资源状态，如果已经修改，更新 isAllowed
  * @returns {Promise<void>}
  */
-async function validateResources (service) {
+async function validateAclConfig (service) {
   const { aclConfig: { resources }, fingerprints } = service
+  let changed = false
   const key = fingerprint(resources)
-  if (key === fingerprints.resources) return // 无变化
-  fingerprints.resources = key
-  logger.info(`resources changed.`)
+  if (key !== fingerprints.resources) {
+    fingerprints.resources = key
+    changed = true
+    logger.info(`resources changed.`)
+  }
 
-  await validateRoles(service)
-  require('./allow')(service)
+  const ret = await validateRoles(service)
+  ret && (changed = true)
+
+  if (changed) {
+    require('./allow')(service)
+  }
+
+  return changed
 }
 
-module.exports = { validateAclConfig: validateResources }
+module.exports = { validateAclConfig }

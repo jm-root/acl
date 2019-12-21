@@ -13,6 +13,11 @@ module.exports = function (service) {
     return { ret }
   }
 
+  async function clear () {
+    const ret = await service.clear()
+    return { ret }
+  }
+
   async function getUserResources ({ data: { user, resource } }) {
     return service.userResources(user, resource)
   }
@@ -53,6 +58,7 @@ module.exports = function (service) {
     .use(filterAclKey(service))
     .add('/areAnyRolesAllowed', 'get', areAnyRolesAllowed)
     .add('/isAllowed', 'get', isAllowed)
+    .add('/clear', 'get', clear)
     .add('/userResources', 'get', getUserResources)
     .add('/roleResources', 'get', getRoleResources)
 

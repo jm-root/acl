@@ -37,6 +37,7 @@ class Service {
     debug && (logger.setLevel('debug'))
 
     event.enableEvent(this, { async: true })
+    this.onReady()
 
     this.redis = require('./redis')({ redis })
 
@@ -44,8 +45,6 @@ class Service {
     this.role = new Role({ service: this, name: 'role' })
     this.resource = new Resource({ service: this, name: 'resource' })
     this.permission = new Permission({ service: this, name: 'permission' })
-
-    this.onReady()
 
     this.load()
       .then(() => { this.emit('ready') })
@@ -73,6 +72,10 @@ class Service {
     await this.redis.del(keys)
     logger.info('acl config cleaned.')
     await this.load()
+    try {
+      this.emit('acl.update')
+    } catch (e) {}
+    return true
   }
 
   // 加载配置信息
