@@ -681,6 +681,12 @@ module.exports = {
               'permissions': [
                 'get'
               ]
+            },
+            {
+              'id': '/areAnyRolesAllowed',
+              'permissions': [
+                'get'
+              ]
             }
           ]
         },
