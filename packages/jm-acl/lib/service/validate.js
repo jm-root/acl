@@ -38,9 +38,11 @@ function _compareRoles (resources, roles) {
 
 async function _allowResource (acl, role, resource, prefix = '') {
   const { id, permissions, children } = resource
-  await acl.allow(role, prefix + id, permissions)
+  if (permissions) {
+    await acl.allow(role, prefix + id, permissions)
+    logger.debug(`allow ${role} ${prefix + id} ${permissions}`)
+  }
   if (children) await _allowResources(acl, role, children, prefix + id)
-  logger.debug(`allow ${role} ${prefix + id} ${permissions}`)
 }
 
 async function _allowResources (acl, role, resources, prefix = '') {

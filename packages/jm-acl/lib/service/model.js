@@ -52,6 +52,7 @@ module.exports = class Model extends EventEmitter {
     let { service, service: { redis, aclConfig }, key } = this
     keySuffix && (key = `${key}:${keySuffix}`)
     if (!this.validate(opts)) throw error.err(Err.FA_VALIDATION)
+    await this.emit('beforeSave', opts, keySuffix)
     const doc = await redis.set(key, JSON.stringify(opts))
     aclConfig[`${this.name}s`] = opts
     validateAclConfig(service)

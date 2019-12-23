@@ -1,24 +1,24 @@
 module.exports = {
-  version: 1,
-  permissions: [
+  'version': 1,
+  'permissions': [
     {
-      id: 'post',
-      title: '增'
+      'id': 'post',
+      'title': '增'
     },
     {
-      id: 'delete',
-      title: '删'
+      'id': 'delete',
+      'title': '删'
     },
     {
-      id: 'put',
-      title: '改'
+      'id': 'put',
+      'title': '改'
     },
     {
-      id: 'get',
-      title: '查'
+      'id': 'get',
+      'title': '查'
     }
   ],
-  resources: [
+  'resources': [
     {
       'id': 'global',
       'title': '全局权限',
@@ -125,7 +125,8 @@ module.exports = {
       'id': '/passport',
       'title': 'Passport',
       'permissions': [
-        'get'
+        'get',
+        'post'
       ],
       'children': [
         {
@@ -472,7 +473,7 @@ module.exports = {
       'noRecursion': 1
     },
     {
-      'id': '/wechat',
+      'id': '/weapp',
       'title': '微信小程序',
       'permissions': [
         'post',
@@ -572,7 +573,7 @@ module.exports = {
       ]
     }
   ],
-  roles: [
+  'roles': [
     {
       'id': 'root',
       'title': '超级管理员',
@@ -591,6 +592,12 @@ module.exports = {
           'children': [
             {
               'id': '/isAllowed',
+              'permissions': [
+                'get'
+              ]
+            },
+            {
+              'id': '/areAnyRolesAllowed',
               'permissions': [
                 'get'
               ]
@@ -671,43 +678,7 @@ module.exports = {
       ],
       'resources': [
         {
-          'id': '/acl',
-          'permissions': [
-            'get'
-          ],
-          'children': [
-            {
-              'id': '/isAllowed',
-              'permissions': [
-                'get'
-              ]
-            },
-            {
-              'id': '/areAnyRolesAllowed',
-              'permissions': [
-                'get'
-              ]
-            }
-          ]
-        },
-        {
-          'id': '/passport',
-          'permissions': [
-            'get',
-            'post'
-          ]
-        },
-        {
-          'id': '/sso',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
           'id': '/user',
-          'permissions': [
-            'get'
-          ],
           'children': [
             {
               'id': '/users',
@@ -722,50 +693,6 @@ module.exports = {
                 }
               ]
             }
-          ]
-        },
-        {
-          'id': '/bank',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/cny',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/tb',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/wechat',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/pay',
-          'permissions': [
-            'get'
-          ],
-          'children': [
-            {
-              'id': '/prepay',
-              'permissions': [
-                'post'
-              ]
-            }
-          ]
-        },
-        {
-          'id': '/agent',
-          'permissions': [
-            'get'
           ]
         }
       ]
@@ -777,100 +704,7 @@ module.exports = {
       'parents': [
         'user'
       ],
-      'resources': [
-        {
-          'id': '/acl',
-          'permissions': [
-            'get'
-          ],
-          'children': [
-            {
-              'id': '/isAllowed',
-              'permissions': [
-                'get'
-              ]
-            }
-          ]
-        },
-        {
-          'id': '/passport',
-          'permissions': [
-            'get',
-            'post'
-          ]
-        },
-        {
-          'id': '/sso',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/user',
-          'permissions': [
-            'get'
-          ],
-          'children': [
-            {
-              'id': '/users',
-              'children': [
-                {
-                  'id': '/:id',
-                  'permissions': [
-                    'delete',
-                    'post',
-                    'put'
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          'id': '/bank',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/cny',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/tb',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/wechat',
-          'permissions': [
-            'get'
-          ]
-        },
-        {
-          'id': '/pay',
-          'permissions': [
-            'get'
-          ],
-          'children': [
-            {
-              'id': '/prepay',
-              'permissions': [
-                'post'
-              ]
-            }
-          ]
-        },
-        {
-          'id': '/agent',
-          'permissions': [
-            'get'
-          ]
-        }
-      ]
+      'resources': []
     }
   ]
 }
