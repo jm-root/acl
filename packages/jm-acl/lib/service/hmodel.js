@@ -28,9 +28,11 @@ module.exports = class Hmodel extends EventEmitter {
   async findOne (id) {
     if (!id) throw error.err(Err.FA_PARAMS)
     const { service: { redis }, key } = this
-    const doc = await redis.hget(key, id)
+    let doc = await redis.hget(key, id)
     if (!doc) return null
-    return JSON.parse(doc)
+    doc = JSON.parse(doc)
+    doc._id = doc.id // deprecated 兼容旧版本
+    return doc
   }
 
   async findAll ({ fields } = {}) {
@@ -39,6 +41,7 @@ module.exports = class Hmodel extends EventEmitter {
     const doc = await redis.hvals(key)
     const rows = doc.map(item => {
       item = JSON.parse(item)
+      item._id = item.id // deprecated 兼容旧版本
       fields && fields.length && (item = _.pick(item, fields))
       return item
     })
@@ -47,6 +50,10 @@ module.exports = class Hmodel extends EventEmitter {
 
   async create (opts) {
     const { service: { redis }, key } = this
+    if (opts._id) {
+      opts.id || (opts.id = opts._id) // deprecated 兼容旧版本
+      delete opts._id
+    }
     if (!opts.id && this.autoId) opts.id = genId()
     const { id } = opts
     if (!id) throw error.err(Err.FA_PARAMS)
