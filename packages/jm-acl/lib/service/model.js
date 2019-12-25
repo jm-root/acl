@@ -79,4 +79,31 @@ module.exports = class Model extends EventEmitter {
     }
     return true
   }
+
+  // 获取指定id
+  async findOne (id) {
+    const doc = await this.load()
+    return doc.find(item => item.id === id)
+  }
+
+  // 设置指定id
+  async updateOne (id, value) {
+    const doc = await this.load()
+    const idx = doc.findIndex(item => item.id === id)
+    if (idx === -1) {
+      doc.push(value)
+    } else {
+      doc[idx] = value
+    }
+    return this.save(doc)
+  }
+
+  // 删除指定id
+  async deleteOne (id) {
+    const doc = await this.load()
+    const idx = doc.findIndex(item => item.id === id)
+    if (idx === -1) return
+    doc.splice(idx, 1)
+    return this.save(doc)
+  }
 }

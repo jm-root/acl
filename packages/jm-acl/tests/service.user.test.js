@@ -52,12 +52,12 @@ describe('service', () => {
     expect(doc === id).toBeTruthy()
   })
 
-  test('findAll', async () => {
-    let doc = await service.findAll()
+  test('find', async () => {
+    let doc = await service.find()
     console.log(doc)
     expect(doc).toBeTruthy()
 
-    doc = await service.findAll({ fields: 'id, nick, roles' })
+    doc = await service.find({ fields: 'id, nick, roles' })
     console.log(doc)
     expect(doc).toBeTruthy()
   })

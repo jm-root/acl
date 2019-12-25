@@ -35,7 +35,7 @@ module.exports = class Hmodel extends EventEmitter {
     return doc
   }
 
-  async findAll ({ fields } = {}) {
+  async find ({ fields } = {}) {
     fields && (fields = split(fields))
     const { service: { redis }, key } = this
     const doc = await redis.hvals(key)

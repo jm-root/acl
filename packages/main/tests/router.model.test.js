@@ -23,6 +23,20 @@ describe('router', () => {
     expect(doc).toBeTruthy()
   })
 
+  test('/permissions one', async () => {
+    let doc = await router.put('/permissions/test', { title: 'test' })
+    console.log(doc)
+    expect(doc).toBeTruthy()
+
+    doc = await router.get('/permissions/test')
+    console.log(doc)
+    expect(doc).toBeTruthy()
+
+    doc = await router.delete('/permissions/test')
+    console.log(doc)
+    expect(doc).toBeTruthy()
+  })
+
   test('/resources', async () => {
     let doc = await router.delete(`/resources`)
     console.log(doc)

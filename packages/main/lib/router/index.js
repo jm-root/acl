@@ -1,6 +1,5 @@
 const MS = require('jm-ms-core')
 const ms = new MS()
-const { filterAclKey } = require('../filters')
 
 module.exports = function (service) {
   async function areAnyRolesAllowed ({ data: { roles, resource, permissions } }) {
@@ -55,7 +54,6 @@ module.exports = function (service) {
 
   const router = ms.router()
   router
-    .use(filterAclKey(service))
     .add('/areAnyRolesAllowed', 'get', areAnyRolesAllowed)
     .add('/isAllowed', 'get', isAllowed)
     .add('/clear', 'get', clear)

@@ -17,7 +17,6 @@ class Service {
       guest_role: guestRole = 'guest',
       user_role: userRole = 'user',
       default_allow: defaultAllow = false,
-      disable_auto_init: disableAutoInit = false,
       redis
     } = opts
 
@@ -28,7 +27,6 @@ class Service {
       guestRole,
       userRole,
       defaultAllow,
-      disableAutoInit,
       ready: false,
       fingerprints: {},
       aclConfig: {}

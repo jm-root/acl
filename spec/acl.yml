@@ -106,6 +106,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ret'
+  /permissions/{id}:
+    get:
+      summary: 获取信息
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+    put:
+      summary: 更新, 如果不存在，则自动新建
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ret'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 删除
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
   /resources:
     get:
       summary: 获取资源列表
@@ -145,6 +196,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ret'
+  /resourcess/{id}:
+    get:
+      summary: 获取信息
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resources'
+    put:
+      summary: 更新, 如果不存在，则自动新建
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ret'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 删除
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
   /roles:
     get:
       summary: 获取角色列表
@@ -177,6 +279,57 @@ paths:
                 $ref: '#/components/schemas/Ret'
     delete:
       summary: 清空角色，恢复默认值
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+  /roles/{id}:
+    get:
+      summary: 获取信息
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+    put:
+      summary: 更新, 如果不存在，则自动新建
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ret'
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ret'
+    delete:
+      summary: 删除
+      parameters:
+        - name: id
+          in: path
+          description: Id
+          schema:
+            type: string
       responses:
         '200':
           description: 返回结果
@@ -307,6 +460,9 @@ components:
           format: int32
           example: 0
           description: 0 失败 1 成功
+    Permission:
+      type: object
+      description: 权限
     Permissions:
       type: object
       properties:
@@ -314,6 +470,9 @@ components:
           type: array
           example: []
           description: 权限列表
+    Resource:
+      type: object
+      description: 资源
     Resources:
       type: object
       properties:
@@ -321,6 +480,9 @@ components:
           type: array
           example: []
           description: 资源列表
+    Role:
+      type: object
+      description: 角色
     Roles:
       type: object
       properties:
