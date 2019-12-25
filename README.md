@@ -52,8 +52,6 @@ docker run -d --name acl  -e redis=redis://localhost jamma/acl
 |guest_role|"guest"|游客角色|
 |user_role|"user"|登录用户角色|
 |default_allow|false|允许访问未登记的资源或权限|
-|acl_user_key|"acl_user"| headers中的user key|
-|acl_role_key|"acl_role"| headers中的role key|
 
 --
 
