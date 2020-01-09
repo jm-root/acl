@@ -63,8 +63,11 @@ module.exports = class Model extends EventEmitter {
   }
 
   async clear () {
-    const { service: { redis }, key } = this
+    const { service, service: { redis }, key } = this
     await redis.del(key)
+    try {
+      service.emit('acl.update', { name: this.name, key })
+    } catch (e) {}
   }
 
   // 校验数据完整性
