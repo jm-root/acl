@@ -67,6 +67,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ret'
+  /load:
+    get:
+      summary: 加载配置信息
+      description:
+      responses:
+        '200':
+          description: 返回结果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AclConfig'
   /permissions:
     get:
       summary: 获取权限列表
@@ -460,6 +471,8 @@ components:
           format: int32
           example: 0
           description: 0 失败 1 成功
+    AclConfig:
+      type: object
     Permission:
       type: object
       description: 权限

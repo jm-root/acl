@@ -17,6 +17,10 @@ module.exports = function (service) {
     return { ret }
   }
 
+  async function load () {
+    return service.load()
+  }
+
   async function getUserResources ({ data: { user, resource } }) {
     return service.userResources(user, resource)
   }
@@ -57,6 +61,7 @@ module.exports = function (service) {
     .add('/areAnyRolesAllowed', 'get', areAnyRolesAllowed)
     .add('/isAllowed', 'get', isAllowed)
     .add('/clear', 'get', clear)
+    .add('/load', 'get', load)
     .add('/userResources', 'get', getUserResources)
     .add('/roleResources', 'get', getRoleResources)
 
