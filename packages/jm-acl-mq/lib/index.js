@@ -26,11 +26,11 @@ module.exports = function (opts, app) {
   bind('mq')
 
   if (!app.modules.acl) {
-    logger.warn('no acl module found. so I can not work.')
+    logger.warn('no acl module found. I will not work.')
     return o
   }
   if (!opts.gateway) {
-    logger.warn('no gateway config. so I can not work.')
+    logger.warn('no gateway config. I will not work.')
     return o
   }
 
