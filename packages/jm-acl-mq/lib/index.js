@@ -17,13 +17,12 @@ module.exports = function (opts, app) {
     }
   }
 
-  let bind = async (name, uri) => {
+  const bind = async (name, uri) => {
     uri || (uri = '/' + name)
     o[name] = await ms.client({
       uri: opts.gateway + uri
     })
   }
-  bind('mq')
 
   if (!app.modules.acl) {
     logger.warn('no acl module found. I will not work.')
@@ -34,9 +33,11 @@ module.exports = function (opts, app) {
     return o
   }
 
-  let acl = app.modules.acl
+  bind('mq')
 
-  let send = async function (topic, message) {
+  const { acl } = app.modules
+
+  const send = async function (topic, message) {
     return o.mq.post(`/${topic}`, { message })
       .catch(e => {
         logger.error(`send mq fail. topic: ${topic} message: ${JSON.stringify(message)}`)
