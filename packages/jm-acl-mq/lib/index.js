@@ -1,5 +1,5 @@
 const log = require('jm-log4js')
-const logger = log.getLogger('acl')
+const logger = log.getLogger('acl-mq')
 const MS = require('jm-ms')
 
 let ms = new MS()
