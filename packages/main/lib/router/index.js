@@ -21,10 +21,6 @@ module.exports = function (service) {
     return service.load()
   }
 
-  async function getUserResources ({ data: { user, resource } }) {
-    return service.userResources(user, resource)
-  }
-
   /**
    * @api {get} /roleResources 获取角色下的资源
    * @apiVersion 0.0.1
@@ -52,7 +48,7 @@ module.exports = function (service) {
     roles || (roles = role || [])
     roles = Array.isArray(roles) ? roles : roles.toString().split(',')
     permissions && (permissions = Array.isArray(permissions) ? permissions : permissions.toString().split(','))
-    const doc = await service.acl.whatResources(roles, permissions)
+    const doc = permissions ? await service.acl.whatResources(roles, permissions) : await service.acl.whatResources(roles)
     return Array.isArray(doc) ? { rows: doc } : doc
   }
 
@@ -62,7 +58,6 @@ module.exports = function (service) {
     .add('/isAllowed', 'get', isAllowed)
     .add('/clear', 'get', clear)
     .add('/load', 'get', load)
-    .add('/userResources', 'get', getUserResources)
     .add('/roleResources', 'get', getRoleResources)
 
   router.prefix = '/'
