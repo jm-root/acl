@@ -82,7 +82,7 @@ class Service {
     const permissions = await permission.load()
     const resources = await resource.load()
     const roles = await role.load()
-    Object.assign(aclConfig, defaultAclConfig)
+    Object.assign(aclConfig, {}, defaultAclConfig)
     permissions && (aclConfig.permissions = permissions)
     resources && (aclConfig.resources = resources)
     roles && (aclConfig.roles = roles)

@@ -59,7 +59,6 @@ paths:
   /clear:
     get:
       summary: 清除配置信息，恢复到默认配置
-      description:
       responses:
         '200':
           description: 返回结果
@@ -70,7 +69,6 @@ paths:
   /load:
     get:
       summary: 加载配置信息
-      description:
       responses:
         '200':
           description: 返回结果
@@ -123,6 +121,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -138,6 +137,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -158,6 +158,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -213,6 +214,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -228,6 +230,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -248,6 +251,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -303,6 +307,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -318,6 +323,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -338,6 +344,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: Id
           schema:
             type: string
@@ -354,6 +361,7 @@ paths:
         parameters:
           - name: id
             in: path
+            required: true
             description: 角色
             schema:
               type: string
@@ -400,6 +408,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: 用户Id
           schema:
             type: string
@@ -415,6 +424,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: 用户Id
           schema:
             type: string
@@ -435,6 +445,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: 用户Id
           schema:
             type: string
@@ -451,6 +462,7 @@ paths:
       parameters:
         - name: id
           in: path
+          required: true
           description: 用户Id
           schema:
             type: string
@@ -481,6 +493,8 @@ components:
       properties:
         rows:
           type: array
+          items:
+            $ref: "#/components/schemas/Permission"
           example: []
           description: 权限列表
     Resource:
@@ -491,6 +505,8 @@ components:
       properties:
         rows:
           type: array
+          items:
+            $ref: "#/components/schemas/Resource"
           example: []
           description: 资源列表
     Role:
@@ -501,6 +517,8 @@ components:
       properties:
         rows:
           type: array
+          items:
+            $ref: "#/components/schemas/Role"
           example: []
           description: 角色列表
     User:
@@ -511,5 +529,7 @@ components:
       properties:
         rows:
           type: array
+          items:
+            $ref: "#/components/schemas/User"
           example: []
           description: 用户列表

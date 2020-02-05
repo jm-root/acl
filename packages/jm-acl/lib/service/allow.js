@@ -42,7 +42,7 @@ module.exports = function (service) {
   }
 
   function loadRoot () {
-    const { superRole, defaultAllow, defaultAclConfig: { resources } } = service
+    const { superRole, defaultAllow, aclConfig: { resources } } = service
 
     // 超级用户
     root.use(opts => {
