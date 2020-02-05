@@ -10,3 +10,4 @@ tests
 Dockerfile
 jest.config.js
 spec
+doc
