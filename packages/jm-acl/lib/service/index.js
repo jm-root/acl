@@ -9,6 +9,13 @@ const Permission = require('./permission')
 
 class Service {
   constructor (opts = {}) {
+    const argv = require('yargs')
+      .boolean(['default_allow', 'debug'])
+      .config(opts)
+      .argv
+    opts.debug = argv.debug
+    opts.default_allow = argv.default_allow
+
     const {
       debug,
       default_acl_config: defaultAclConfig = {},

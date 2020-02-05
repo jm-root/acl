@@ -5,7 +5,6 @@ module.exports = {
   modules: {
     acl: {
       module: 'main'
-    },
-    'jm-acl-mq': {}
+    }
   }
 }
