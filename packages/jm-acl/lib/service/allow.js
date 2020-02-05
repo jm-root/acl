@@ -91,8 +91,12 @@ module.exports = function (service) {
    * doc: 结果(true or false)
    */
   service.isAllowed = async function (user, resource, permissions) {
+    const { userRole } = this
     let roles = null
-    user && (roles = await this.userRoles(user))
+    if (user) {
+      roles = await this.userRoles(user)
+      roles.indexOf(userRole) === -1 && (roles.push(userRole))
+    }
     return this.areAnyRolesAllowed(roles, resource, permissions)
   }
 
@@ -103,15 +107,16 @@ module.exports = function (service) {
    * @returns {Promise<*>}
    */
   service.areAnyRolesAllowed = async function (roles, resource, permissions) {
-    const { defaultAllow } = this
+    const { defaultAllow, guestRole } = this
 
     permissions || (permissions = [])
     permissions = makeArray(permissions)
 
     if (!resource || !permissions.length) return defaultAllow
 
-    roles || (roles = [this.guestRole])
+    roles || (roles = [guestRole])
     roles = makeArray(roles)
+    roles.indexOf(guestRole) === -1 && (roles.push(guestRole))
 
     return root.request({
       uri: resource,
