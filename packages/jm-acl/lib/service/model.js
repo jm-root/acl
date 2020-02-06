@@ -63,11 +63,31 @@ module.exports = class Model extends EventEmitter {
   }
 
   async clear () {
-    const { service, service: { redis }, key } = this
-    await redis.del(key)
-    try {
-      service.emit('acl.update', { name: this.name, key })
-    } catch (e) {}
+    let { service: { defaultAclConfig }, name } = this
+    await this.save(defaultAclConfig[`${name}s`])
+  }
+
+  checkObj (o) {
+    if (!o || typeof (o) !== 'object') return
+    for (const key of Object.keys(o)) {
+      let value = o[key]
+      // 保证noRecursion 为boolean
+      if (key === 'noRecursion' && typeof value !== 'boolean') {
+        o[key] = !!value
+      }
+      // 数组去重
+      if (Array.isArray(value)) {
+        const v = _.uniq(value)
+        if (v.length !== value.length) {
+          value = v
+          o[key] = value
+        }
+
+        for (const item of value) {
+          this.checkObj(item)
+        }
+      }
+    }
   }
 
   // 校验数据完整性
@@ -80,6 +100,11 @@ module.exports = class Model extends EventEmitter {
     for (const { id, children } of v) {
       if (!id) return false
       if (children) if (!this.validate(children)) return false
+    }
+
+    // 检查并修正对象
+    for (const item of v) {
+      this.checkObj(item)
     }
     return true
   }

@@ -77,6 +77,7 @@ class Service {
     await this.redis.del(keys)
     logger.info('acl config cleaned.')
     await this.load()
+    await this.save()
     try {
       this.emit('acl.update')
     } catch (e) {}
