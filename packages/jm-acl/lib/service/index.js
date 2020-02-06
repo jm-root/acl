@@ -109,12 +109,13 @@ class Service {
   }
 
   /**
-   * 获取用户的角色
+   * 获取用户的角色, 包括继承的父角色
    * @param user 用户, 一般为userId
    * @returns {Promise<Array>}
    */
   async userRoles (user) {
-    return this.user.roles(user)
+    const roles = await this.user.roles(user)
+    return this.acl._allRoles(roles)
   }
 
   /**
