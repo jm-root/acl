@@ -43,12 +43,6 @@ class UserRole {
     const key = this.getKeyRoles(id)
     return redis.smembers(key)
   }
-
-  async hasRole (id, role) {
-    const { redis } = this.service
-    const key = this.getKeyRoles(id)
-    return redis.sismember(key, role)
-  }
 }
 
 module.exports = class User extends Model {
@@ -131,16 +125,5 @@ module.exports = class User extends Model {
   async roles (id) {
     if (!id) throw error.err(Err.FA_PARAMS)
     return this.userRole.roles(id)
-  }
-
-  /**
-   * 检测用户是否拥有指定角色
-   * @param id 用户, 一般为userId
-   * @param role
-   * @returns {Promise<*>}
-   */
-  async hasRole (id, role) {
-    if (!id || !role) throw error.err(Err.FA_PARAMS)
-    return this.userRole.hasRole(id, role)
   }
 }

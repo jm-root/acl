@@ -125,7 +125,8 @@ class Service {
    * @returns {Promise<*>}
    */
   async hasRole (user, role) {
-    return this.user.hasRole(user, role)
+    const roles = await this.userRoles(user)
+    return roles.indexOf(role) !== -1
   }
 
   /**
