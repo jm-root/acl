@@ -46,7 +46,8 @@ module.exports = function (service) {
      *  rows:['具有指定权限的资源']
      * }
    */
-  async function whatResources ({ data: { roles = [], permissions } }) {
+  async function whatResources ({ data: { roles = [], role, permissions } }) {
+    role && (roles = [role])
     const doc = permissions ? await service.acl.whatResources(roles, permissions) : await service.acl.whatResources(roles)
     return Array.isArray(doc) ? { rows: doc } : doc
   }
