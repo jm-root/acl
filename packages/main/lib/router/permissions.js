@@ -1,6 +1,6 @@
 const MS = require('jm-ms-core')
 const ms = new MS()
-const { modelRouter } = require('../filters')
+const { modelRouter } = require('../middleware')
 
 module.exports = function (service) {
   const { permission: model } = service

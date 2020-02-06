@@ -1,5 +1,6 @@
 const MS = require('jm-ms-core')
 const ms = new MS()
+const { makeArray } = require('../middleware')
 
 module.exports = function (service) {
   async function areAnyRolesAllowed ({ data: { roles, resource, permissions } }) {
@@ -18,11 +19,12 @@ module.exports = function (service) {
   }
 
   async function load () {
-    return service.load()
+    const ret = service.load()
+    return { ret: !!ret }
   }
 
   /**
-   * @api {get} /roleResources 获取角色下的资源
+   * @api {get} /roleResources 获取角色下的资源, 如果限定了权限，则只返回包含任意一个权限的资源数组
    * @apiVersion 0.0.1
    * @apiGroup Acl
    * @apiUse Error
@@ -44,21 +46,19 @@ module.exports = function (service) {
      *  rows:['具有指定权限的资源']
      * }
    */
-  async function getRoleResources ({ data: { roles, role, permissions } }) {
-    roles || (roles = role || [])
-    roles = Array.isArray(roles) ? roles : roles.toString().split(',')
-    permissions && (permissions = Array.isArray(permissions) ? permissions : permissions.toString().split(','))
+  async function whatResources ({ data: { roles = [], permissions } }) {
     const doc = permissions ? await service.acl.whatResources(roles, permissions) : await service.acl.whatResources(roles)
     return Array.isArray(doc) ? { rows: doc } : doc
   }
 
   const router = ms.router()
   router
-    .add('/areAnyRolesAllowed', 'get', areAnyRolesAllowed)
-    .add('/isAllowed', 'get', isAllowed)
+    .add('/areAnyRolesAllowed', 'get', makeArray('roles', 'permissions'), areAnyRolesAllowed)
+    .add('/isAllowed', 'get', makeArray('permissions'), isAllowed)
     .add('/clear', 'get', clear)
     .add('/load', 'get', load)
-    .add('/roleResources', 'get', getRoleResources)
+    .add('/roleResources', 'get', makeArray('roles', 'permissions'), whatResources) // Deprecated, pls use /roles/:id/resources
+    .add('/roles/:id/resources', 'get', ({ data, params: { id: roles } }) => { data.roles = roles }, makeArray('roles', 'permissions'), whatResources)
 
   router.prefix = '/'
 

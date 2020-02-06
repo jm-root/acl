@@ -1,6 +1,6 @@
 const MS = require('jm-ms-core')
 const ms = new MS()
-const { hmodelRouter } = require('../filters')
+const { hmodelRouter } = require('../middleware')
 
 module.exports = function (service) {
   const { user: model } = service
