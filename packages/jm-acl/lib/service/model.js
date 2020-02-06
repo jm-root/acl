@@ -73,6 +73,7 @@ module.exports = class Model extends EventEmitter {
   // 校验数据完整性
   validate (v) {
     if (!Array.isArray(v)) return false
+    _.remove(v, item => item === null)
     const ids = v.map(({ id }) => id)
     const s = new Set(ids)
     if (s.size !== v.length) return false
@@ -93,6 +94,7 @@ module.exports = class Model extends EventEmitter {
   async updateOne (id, value) {
     const doc = await this.load()
     const idx = doc.findIndex(item => item.id === id)
+    Object.assign(value, { id })
     if (idx === -1) {
       doc.push(value)
     } else {

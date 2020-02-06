@@ -1,5 +1,6 @@
 const MS = require('jm-ms-core')
 const ms = new MS()
+const makeArray = require('./makearray')
 
 /**
  * 创建指定hmodel的CRUD路由
@@ -9,19 +10,19 @@ const ms = new MS()
 module.exports = function (model) {
   const router = ms.router()
 
-  async function find () {
-    const rows = await model.load()
+  async function find ({ data }) {
+    const rows = await model.load(data)
     return { rows }
   }
 
   async function update ({ data }) {
     await model.save(data.rows)
-    return { ret: 1 }
+    return { ret: true }
   }
 
   async function clear () {
     await model.clear()
-    return { ret: 1 }
+    return { ret: true }
   }
 
   async function findOne ({ params: { id } }) {
@@ -31,18 +32,18 @@ module.exports = function (model) {
 
   async function updateOne ({ params: { id }, data }) {
     id && (id = decodeURIComponent(id))
-    await model.updateOne(id, { id, ...data })
-    return { ret: 1 }
+    await model.updateOne(id, data)
+    return { ret: true }
   }
 
   async function deleteOne ({ params: { id } }) {
     id && (id = decodeURIComponent(id))
     await model.deleteOne(id)
-    return { ret: 1 }
+    return { ret: true }
   }
 
   router
-    .add('/', 'get', find)
+    .add('/', 'get', makeArray('fields'), find)
     .add('/', 'post', update)
     .add('/', 'delete', clear)
     .add('/:id', 'get', findOne)
