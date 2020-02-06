@@ -1,130 +1,117 @@
+# 约定
+# schema定义名称大写字母开头代表一个对象类型，小写字母开头代表一个基本类型
+# 例如 Role表示{id:'guest'} role表示'guest'
+# Roles表示[{id:'guest'}] roles表示['guest']
 openapi: 3.0.0
-# Added by API Auto Mocking Plugin
 servers:
-  - description: SwaggerHub API Auto Mocking
-    url: https://api.jamma.cn/acl
+  - url: 'http://localhost:3000/acl'
+  - url: 'http://localhost:82/acl'
+  - url: 'https://api.jamma.cn/acl'
 info:
-  version: "1.0.0"
-  title: jm-acl-api
-  description: ACL API
+  version: 1.0.0
+  title: acl
+  description: acl api 
+  contact:
+    name: jeff
+    url: 'https://github.com/jammacn'
+    email: jeff@jamma.cn
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: base
+    description: 基础接口
+externalDocs:
+  url: 'https://github.com/jm-root/acl'
 paths:
   /areAnyRolesAllowed:
     get:
-      summary: 检查指定角色是否有权限访问
-      description: 指定角色中任意角色对于指定资源有指定权限，就返回true，否则返回false
+      summary: 角色鉴权
+      description: 检查角色是否有权限访问，任意角色对于资源有权限，就返回true，否则返回false
       parameters:
-        - name: roles
-          in: query
-          schema:
-            type: string
-        - name: resource
-          in: query
-          schema:
-            type: string
-        - name: permissions
-          in: query
-          schema:
-            type: string
+        - $ref: '#/components/parameters/roles'
+        - $ref: '#/components/parameters/resource'
+        - $ref: '#/components/parameters/permissions'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+      tags:
+        - base
   /isAllowed:
     get:
-      summary: 检查指定用户是否有权限访问
-      description: 指定用户对于指定资源有指定权限，就返回true，否则返回false
+      summary: 用户鉴权
+      description: 检查用户是否有权限访问，有就返回true，否则返回false
       parameters:
-        - name: user
-          in: query
-          schema:
-            type: string
-        - name: resource
-          in: query
-          schema:
-            type: string
-        - name: permissions
-          in: query
-          schema:
-            type: string
+        - $ref: '#/components/parameters/user'
+        - $ref: '#/components/parameters/resource'
+        - $ref: '#/components/parameters/permissions'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+      tags:
+        - base
   /clear:
     get:
-      summary: 清除配置信息，恢复到默认配置
+      summary: 清除配置
+      description: （谨慎使用）清除所有数据，恢复到默认配置
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
   /load:
     get:
-      summary: 加载配置信息
+      summary: 加载配置
+      description: 重新加载配置信息
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AclConfig'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
   /permissions:
     get:
-      summary: 获取权限列表
+      summary: 查询权限列表
       parameters:
-        - name: fields
-          description: 指定需要返回的字段，默认全部返回
-          in: query
-          schema:
-            type: string
+        - $ref: '#/components/parameters/fields'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Permissions'
+                $ref: '#/components/schemas/PermissionList'
+        default:
+          $ref: '#/components/responses/Err'
     post:
-      summary: 保存权限
+      summary: 保存权限列表
+      description: 替换所有数据
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Permissions'
+              $ref: '#/components/schemas/PermissionList'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
     delete:
-      summary: 清空权限，恢复默认值
+      summary: 清空所有权限
+      description: （谨慎使用）清除数据，恢复到默认配置
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
-  /permissions/{id}:
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+  '/permissions/{id}':
     get:
-      summary: 获取信息
+      summary: 查询权限
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: 返回结果
@@ -132,185 +119,145 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Permission'
+        default:
+          $ref: '#/components/responses/Err'
     put:
-      summary: 更新, 如果不存在，则自动新建
+      summary: 更新权限
+      description: 如果不存在，则自动新建
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ret'
+              $ref: '#/components/schemas/Permission'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
     delete:
-      summary: 删除
+      summary: 删除权限
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
   /resources:
     get:
-      summary: 获取资源列表
+      summary: 查询资源列表
       parameters:
-        - name: fields
-          description: 指定需要返回的字段，默认全部返回
-          in: query
-          schema:
-            type: string
+        - $ref: '#/components/parameters/fields'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resources'
+                $ref: '#/components/schemas/ResourceList'
+        default:
+          $ref: '#/components/responses/Err'
     post:
-      summary: 保存资源
+      summary: 保存资源列表
+      description: 替换所有数据
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Resources'
+              $ref: '#/components/schemas/ResourceList'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
     delete:
-      summary: 清空资源，恢复默认值
+      summary: 清空所有资源
+      description: （谨慎使用）清除数据，恢复到默认配置
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
-  /resourcess/{id}:
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+  '/resources/{id}':
     get:
-      summary: 获取信息
+      summary: 查询资源
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Resources'
+                $ref: '#/components/schemas/Resource'
+        default:
+          $ref: '#/components/responses/Err'
     put:
-      summary: 更新, 如果不存在，则自动新建
+      summary: 更新资源
+      description: 如果不存在，则自动新建
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ret'
+              $ref: '#/components/schemas/Resource'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
     delete:
-      summary: 删除
+      summary: 删除资源
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
   /roles:
     get:
-      summary: 获取角色列表
+      summary: 查询角色列表
       parameters:
-        - name: fields
-          description: 指定需要返回的字段，默认全部返回
-          in: query
-          schema:
-            type: string
+        - $ref: '#/components/parameters/fields'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Roles'
+                $ref: '#/components/schemas/RoleList'
+        default:
+          $ref: '#/components/responses/Err'
     post:
-      summary: 保存角色
+      summary: 保存角色列表
+      description: 替换所有数据
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Roles'
+              $ref: '#/components/schemas/RoleList'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
     delete:
-      summary: 清空角色，恢复默认值
+      summary: 清空所有角色
+      description: （谨慎使用）清除数据，恢复到默认配置
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
-  /roles/{id}:
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+  '/roles/{id}':
     get:
-      summary: 获取信息
+      summary: 查询角色
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: 返回结果
@@ -318,78 +265,61 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Role'
+        default:
+          $ref: '#/components/responses/Err'
     put:
-      summary: 更新, 如果不存在，则自动新建
+      summary: 更新角色
+      description: 如果不存在，则自动新建
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ret'
+              $ref: '#/components/schemas/Role'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
     delete:
-      summary: 删除
+      summary: 删除角色
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+  '/roles/{id}/resources':
+    get:
+      summary: 获取指定角色的资源列表
+      parameters:
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ret'
-  /roles/{id}/resources:
-      get:
-        summary: 获取指定角色的资源列表
-        parameters:
-          - name: id
-            in: path
-            required: true
-            description: 角色
-            schema:
-              type: string
-        responses:
-          '200':
-            description: 返回结果
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Resources'
+                $ref: '#/components/schemas/resources'
   /users:
     get:
-      summary: 获取用户列表
+      summary: 查询用户列表
       parameters:
-        - name: fields
-          description: 指定需要返回的字段，默认全部返回
-          in: query
-          schema:
-            type: string
+        - $ref: '#/components/parameters/fields'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Users'
+                $ref: '#/components/schemas/UserList'
+        default:
+          $ref: '#/components/responses/Err'
     post:
-      summary: 新建用户
+      summary: 新增用户
+      description: 如果用户已经存在，更新用户
       requestBody:
         content:
           application/json:
@@ -402,16 +332,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /users/{id}:
+        default:
+          $ref: '#/components/responses/Err'
+  '/users/{id}':
     get:
-      summary: 获取用户信息
+      summary: 查询用户
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: 用户Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: 返回结果
@@ -419,15 +346,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        default:
+          $ref: '#/components/responses/Err'
+      tags:
+        - base
     put:
-      summary: 更新用户, 如果用户不存在，则自动新建用户
+      summary: 更新用户
+      description: 如果用户不存在，则自动新建用户
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: 用户Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       requestBody:
         content:
           application/json:
@@ -435,46 +362,75 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+      tags:
+        - base
     delete:
       summary: 删除用户
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: 用户Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
-          description: 返回结果
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ret'
-  /users/{id}/roles:
+          $ref: '#/components/responses/BoolRet'
+        default:
+          $ref: '#/components/responses/Err'
+      tags:
+        - base
+  '/users/{id}/roles':
     get:
-      summary: 获取指定用户角色列表
+      summary: 查询用户角色
+      description: 返回用户的角色数组，包含继承的父级角色
       parameters:
-        - name: id
-          in: path
-          required: true
-          description: 用户Id
-          schema:
-            type: string
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: 返回结果
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Roles'
+                $ref: '#/components/schemas/rolelist'
+        default:
+          $ref: '#/components/responses/Err'
+      tags:
+        - base
 components:
   schemas:
+    List:
+      type: object
+      description: 列表
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+      required:
+        - rows
+    Err:
+      type: object
+      properties:
+        err:
+          type: integer
+          format: int32
+          example: 1
+          description: 错误编码
+        msg:
+          type: string
+          example: Fail
+          description: 错误信息
+        status:
+          type: integer
+          format: int32
+          example: 500
+          description: 状态码
+    BoolRet:
+      type: object
+      properties:
+        ret:
+          type: boolean
+          format: int32
+          example: true
     Ret:
       type: object
       properties:
@@ -483,53 +439,271 @@ components:
           format: int32
           example: 0
           description: 0 失败 1 成功
-    AclConfig:
-      type: object
     Permission:
       type: object
       description: 权限
-    Permissions:
-      type: object
       properties:
-        rows:
-          type: array
-          items:
-            $ref: "#/components/schemas/Permission"
-          example: []
-          description: 权限列表
+        id:
+          type: string
+          example: get
+        title:
+          type: string
+          example: 查
+          description: 标题
+    Permissions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Permission'
+    PermissionList:
+      type: object
+      description: 权限列表
+      allOf:
+        - $ref: '#/components/schemas/List'
+        - type: object
+          properties:
+            rows:
+              $ref: '#/components/schemas/Permissions'
+    permissions:
+      type: array
+      items:
+        type: string
+        example: get
     Resource:
       type: object
       description: 资源
-    Resources:
-      type: object
       properties:
-        rows:
-          type: array
-          items:
-            $ref: "#/components/schemas/Resource"
-          example: []
-          description: 资源列表
+        id:
+          type: string
+          example: /acl
+        title:
+          type: string
+          example: 鉴权
+          description: 标题
+        noRecursion:
+          type: boolean
+          example: true
+          description: 是否允许传递权限
+        permissions:
+          $ref: '#/components/schemas/permissions'
+        children:
+          $ref: '#/components/schemas/Resources'
+    Resources:
+      type: array
+      items:
+        $ref: '#/components/schemas/Resource'
+    ResourceList:
+      type: object
+      description: 资源列表
+      allOf:
+        - $ref: '#/components/schemas/List'
+        - type: object
+          properties:
+            rows:
+              $ref: '#/components/schemas/Resources'
+    resource:
+      type: object
+      description: 资源
+      properties:
+        id:
+          type: string
+          example: /acl
+        permissions:
+          $ref: '#/components/schemas/permissions'
+        children:
+          $ref: '#/components/schemas/resources'
+    resources:
+      type: array
+      items:
+        $ref: '#/components/schemas/resource'
     Role:
       type: object
       description: 角色
+      properties:
+        id:
+          type: string
+          example: guest
+        title:
+          type: string
+          example: 游客
+          description: 标题
+        description:
+          type: string
+          example: 所有未登录的用户
+          description: 描述
+        resources:
+          $ref: '#/components/schemas/resources'
     Roles:
+      type: array
+      items:
+        $ref: '#/components/schemas/Role'
+    RoleList:
+      type: object
+      description: 角色列表
+      allOf:
+        - $ref: '#/components/schemas/List'
+        - type: object
+          properties:
+            rows:
+              $ref: '#/components/schemas/Roles'
+    roles:
+      type: array
+      items:
+        type: string
+        example: guest
+    rolelist:
       type: object
       properties:
         rows:
-          type: array
-          items:
-            $ref: "#/components/schemas/Role"
-          example: []
-          description: 角色列表
+          $ref: '#/components/schemas/roles'
     User:
       type: object
       description: 用户
-    Users:
-      type: object
       properties:
-        rows:
-          type: array
-          items:
-            $ref: "#/components/schemas/User"
-          example: []
-          description: 用户列表
+        id:
+          type: string
+          example: 5d9d5af874050000c7006b43
+        nick:
+          type: string
+          example: admin
+          description: 昵称
+        roles:
+          $ref: '#/components/schemas/roles'
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    UserList:
+      type: object
+      description: 用户列表
+      allOf:
+        - $ref: '#/components/schemas/List'
+        - type: object
+          properties:
+            rows:
+              $ref: '#/components/schemas/Users'
+  parameters:
+    id:
+      name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+      examples:
+        user:
+          $ref: '#/components/examples/id'
+        permission:
+          $ref: '#/components/examples/permission'
+        resource:
+          $ref: '#/components/examples/resource'
+        role:
+          $ref: '#/components/examples/role'
+    fields:
+      name: fields
+      description: 指定需要返回的字段，默认全部返回
+      in: query
+      schema:
+        type: array
+        items:
+          type: string
+      examples:
+        all:
+          $ref: '#/components/examples/allfields'
+        fields:
+          $ref: '#/components/examples/fields'
+    user:
+      name: user
+      in: query
+      description: 用户
+      schema:
+        type: string
+      examples:
+        user:
+          $ref: '#/components/examples/user'
+    role:
+      name: role
+      in: query
+      description: 角色
+      schema:
+        type: string
+      examples:
+        role:
+          $ref: '#/components/examples/role'
+    roles:
+      name: roles
+      in: query
+      description: 角色数组
+      schema:
+        type: array
+        items:
+          type: string
+      examples:
+        roles:
+          $ref: '#/components/examples/roles'
+    resource:
+      name: resource
+      in: query
+      description: 资源
+      schema:
+        type: string
+      examples:
+        resource:
+          $ref: '#/components/examples/resource'
+    permissions:
+      name: permissions
+      in: query
+      description: 权限数组
+      schema:
+        type: array
+        items:
+          type: string
+      examples:
+        permissions:
+          $ref: '#/components/examples/permissions'
+  responses:
+    Err:
+      description: 返回错误
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Err'
+    BoolRet:
+      description: 返回Boolean结果
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BoolRet'
+    Ret:
+      description: 返回结果
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ret'
+  examples:
+    id:
+      summary: 用户
+      value: '5d9d5af874050000c7006b43'
+    allfields:
+      summary: 所有字段
+      value: []
+    fields:
+      summary: 字段id
+      value: ['id']
+    user:
+      summary: 用户
+      value: '5d9d5af874050000c7006b43'
+    role:
+      summary: 角色
+      value: 'guest'
+    roles:
+      summary: 角色数组
+      value: ['guest','root']
+    resource:
+      summary: 资源
+      value: '/acl'
+    permission:
+      summary: 权限
+      value: 'get'
+    permissions:
+      summary: 权限数组
+      value: ['get','post']
