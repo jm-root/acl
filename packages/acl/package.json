@@ -1,5 +1,5 @@
 {
-  "name": "main",
+  "name": "acl",
   "version": "1.0.0",
   "description": "general acl service",
   "main": "./lib/index",

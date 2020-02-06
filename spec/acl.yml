@@ -4,6 +4,7 @@
 # Roles表示[{id:'guest'}] roles表示['guest']
 openapi: 3.0.0
 servers:
+  - url: 'http://localhost:3000/acl'
   - url: 'https://api.jamma.cn/acl'
 info:
   version: 1.0.0
@@ -18,7 +19,7 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
   - name: base
-    description: 基础接口
+    description: 常用接口
 externalDocs:
   url: 'https://github.com/jm-root/acl'
 paths:
