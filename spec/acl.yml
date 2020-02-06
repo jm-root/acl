@@ -4,8 +4,6 @@
 # Roles表示[{id:'guest'}] roles表示['guest']
 openapi: 3.0.0
 servers:
-  - url: 'http://localhost:3000/acl'
-  - url: 'http://localhost:82/acl'
   - url: 'https://api.jamma.cn/acl'
 info:
   version: 1.0.0
