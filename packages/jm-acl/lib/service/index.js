@@ -1,4 +1,4 @@
-const event = require('jm-event')
+const { Service } = require('jm-server')
 const log = require('jm-log4js')
 const { arg2bool } = require('jm-utils')
 const { validateAclConfig } = require('./validate')
@@ -8,8 +8,9 @@ const Role = require('./role')
 const Resource = require('./resource')
 const Permission = require('./permission')
 
-class Service {
+module.exports = class extends Service {
   constructor (opts = {}) {
+    super(opts)
     let v = ['default_allow']
     v.forEach(function (key) {
       const value = opts[key]
@@ -41,9 +42,6 @@ class Service {
 
     debug && (logger.setLevel('debug'))
 
-    event.enableEvent(this, { async: true })
-    this.onReady()
-
     this.redis = require('./redis')({ redis })
 
     this.user = new User({ service: this, name: 'user', autoId: true })
@@ -53,16 +51,6 @@ class Service {
 
     this.load()
       .then(() => { this.emit('ready') })
-  }
-
-  async onReady () {
-    if (this.ready) return
-    return new Promise(resolve => {
-      this.once('ready', () => {
-        this.ready = true
-        resolve()
-      })
-    })
   }
 
   // 获取 redis key 前缀
@@ -139,5 +127,3 @@ class Service {
     return this.hasRole(user, this.superRole)
   }
 }
-
-module.exports = Service

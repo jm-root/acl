@@ -1,17 +1,7 @@
 const { ms } = require('jm-server')
 
-/**
- * 创建Gateway
- * @class Gateway
- */
-module.exports = class {
-  /**
-   * 构造
-   * @param {object} gateway -
-   */
-  constructor ({ gateway }) {
-    Object.assign(this, { gateway })
-  }
+module.exports = async function ({ gateway }) {
+  const client = await ms.client({ uri: gateway })
 
   /**
    * 建立服务访问绑定
@@ -19,11 +9,13 @@ module.exports = class {
    * @param {string} uri 访问路径
    * @returns {Promise<*>} -
    */
-  async bind (name, uri) {
+  client.bind = async function (name, uri) {
     uri || (uri = `/${name}`)
-    uri.indexOf('://') === -1 && (uri = this.gateway + uri)
+    uri.indexOf('://') === -1 && (uri = gateway + uri)
     const doc = await ms.client({ uri })
     this[name] = doc
     return doc
   }
+
+  return client
 }
