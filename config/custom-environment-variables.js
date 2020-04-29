@@ -13,7 +13,9 @@ module.exports = {
       }
     },
     'jm-acl-mq': {
-      gateway: 'gateway'
+      config: {
+        gateway: 'gateway'
+      }
     }
   }
 }

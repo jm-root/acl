@@ -1,8 +1,6 @@
 const log = require('jm-log4js')
 const logger = log.getLogger('acl-mq')
-const MS = require('jm-ms')
-
-let ms = new MS()
+const { ms } = require('jm-server')
 
 module.exports = function (opts, app) {
   ['gateway'].forEach(function (key) {
