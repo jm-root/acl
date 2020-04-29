@@ -1,5 +1,6 @@
 const event = require('jm-event')
 const log = require('jm-log4js')
+const { arg2bool } = require('jm-utils')
 const { validateAclConfig } = require('./validate')
 const logger = log.getLogger('acl')
 const User = require('./user')
@@ -9,12 +10,11 @@ const Permission = require('./permission')
 
 class Service {
   constructor (opts = {}) {
-    const argv = require('yargs')
-      .boolean(['default_allow', 'debug'])
-      .config(opts)
-      .argv
-    opts.debug = argv.debug
-    opts.default_allow = argv.default_allow
+    let v = ['default_allow']
+    v.forEach(function (key) {
+      const value = opts[key]
+      value !== undefined && (opts[key] = arg2bool(value))
+    })
 
     const {
       debug,

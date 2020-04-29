@@ -1,4 +1,5 @@
 {
+  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -30,12 +31,9 @@
   },
   "dependencies": {
     "config": "^3.2.4",
-    "jm-err": "^1.0.7",
-    "jm-log4js": "^2.0.5",
-    "jm-server": "^2.0.9",
-    "jm-server-jaeger": "^0.0.3",
-    "log4js": "^6.1.0",
-    "yargs": "^15.1.0"
+    "jm-server": "^2.1.1",
+    "jm-server-jaeger": "^0.0.4",
+    "log4js": "^6.1.0"
   },
   "devDependencies": {
     "husky": "^1.2.0",
