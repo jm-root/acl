@@ -1,5 +1,4 @@
-const MS = require('jm-ms-core')
-const ms = new MS()
+const { ms } = require('jm-server')
 const { makeArray } = require('../middleware')
 
 module.exports = function (service) {

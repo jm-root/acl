@@ -1,5 +1,4 @@
-const MS = require('jm-ms')
-const ms = new MS()
+const { ms } = require('jm-server')
 
 /**
  * 创建Gateway

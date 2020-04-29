@@ -1,8 +1,7 @@
-const MS = require('jm-ms-core')
 const log = require('jm-log4js')
 const { makeArray } = require('../utils')
 
-const ms = new MS()
+const { ms } = require('jm-server')
 const logger = log.getLogger('acl')
 
 module.exports = function (service) {
