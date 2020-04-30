@@ -24,18 +24,22 @@ class $ extends Service {
       this.emit('ready')
     })
 
-    const send = async function (topic, message) {
-      await this.onReady()
-      try { await this.gateway.mq.post(`/${topic}`, { message }) } catch (e) {
-        logger.error(`send mq fail. topic: ${topic} message: ${JSON.stringify(message)}`)
-        logger.error(e)
-      }
-    }
-
     acl
       .on('acl.update', opts => {
-        opts && (send('acl.update', opts))
+        opts && (this.send('acl.update', opts))
       })
+  }
+
+  async send (topic, message) {
+    await this.onReady()
+    const msg = `topic: ${topic} message: ${JSON.stringify(message)}`
+    try {
+      logger.debug(`send mq. ${msg}`)
+      await this.gateway.mq.post(`/${topic}`, { message })
+    } catch (e) {
+      logger.error(`send mq fail. ${msg}`)
+      logger.error(e)
+    }
   }
 }
 

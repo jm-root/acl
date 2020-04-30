@@ -18,8 +18,5 @@
   "bugs": {
     "url": "https://github.com/jm-root/acl/issues"
   },
-  "homepage": "https://github.com/jm-root/acl",
-  "dependencies": {
-    "jm-log4js": "^1.1.1"
-  }
+  "homepage": "https://github.com/jm-root/acl"
 }
