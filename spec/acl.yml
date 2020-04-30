@@ -5,6 +5,7 @@
 openapi: 3.0.0
 servers:
   - url: 'http://localhost:3000/acl'
+  - url: 'https://api.l.jamma.cn/acl'
   - url: 'https://api.jamma.cn/acl'
 info:
   version: 1.0.0
