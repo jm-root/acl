@@ -4,13 +4,14 @@
 # Roles表示[{id:'guest'}] roles表示['guest']
 openapi: 3.0.0
 servers:
-  - url: 'http://localhost:3000/acl'
-  - url: 'https://api.l.jamma.cn/acl'
   - url: 'https://api.jamma.cn/acl'
+  - url: 'http://gateway.l.jamma.cn/acl'
+  - url: 'http://api.l.jamma.cn/acl'
+  - url: 'http://localhost:3000/acl'
 info:
   version: 1.0.0
   title: acl
-  description: acl api 
+  description: acl api
   contact:
     name: jeff
     url: 'https://github.com/jammacn'
@@ -19,7 +20,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
-  - name: base
+  - name: common
     description: 常用接口
 externalDocs:
   url: 'https://github.com/jm-root/acl'
@@ -38,7 +39,7 @@ paths:
         default:
           $ref: '#/components/responses/Err'
       tags:
-        - base
+        - common
   /isAllowed:
     get:
       summary: 用户鉴权
@@ -53,7 +54,7 @@ paths:
         default:
           $ref: '#/components/responses/Err'
       tags:
-        - base
+        - common
   /clear:
     get:
       summary: 清除配置
@@ -349,7 +350,7 @@ paths:
         default:
           $ref: '#/components/responses/Err'
       tags:
-        - base
+        - common
     put:
       summary: 更新用户
       description: 如果用户不存在，则自动新建用户
@@ -366,7 +367,7 @@ paths:
         default:
           $ref: '#/components/responses/Err'
       tags:
-        - base
+        - common
     delete:
       summary: 删除用户
       parameters:
@@ -377,7 +378,7 @@ paths:
         default:
           $ref: '#/components/responses/Err'
       tags:
-        - base
+        - common
   '/users/{id}/roles':
     get:
       summary: 查询用户角色
@@ -394,7 +395,7 @@ paths:
         default:
           $ref: '#/components/responses/Err'
       tags:
-        - base
+        - common
 components:
   schemas:
     List:
