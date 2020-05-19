@@ -1,8 +1,16 @@
-# 鉴权 acl
+---
+theme : "white"
+---
+
+# acl
 
 通用鉴权系统
 
 Access control lists
+
+<small>作者：[鱼哥](https://github.com/jammacn)</small>
+
+---
 
 ## 部署
 
@@ -11,14 +19,28 @@ Access control lists
 环境变量见后面的[环境变量](#环境变量)说明
 ```
 // 请用自己的redis url 替换 localhost
-docker run -d name acl  -e redis=redis://localhost jamma/acl
+docker run -d --name acl  -e redis=redis://localhost jamma/acl
 ```
 
-## 环境变量
+---
+
+## <a name="环境变量">环境变量</a>
+
+- jm-server
+
+- jm-acl
+
+- jm-acl-mq
+
+- jm-server-jaeger
+
+--
 
 ### jm-server
 
-请参考 [jm-server](https://github.com/jm-root/server/tree/master/packages/jm-server)
+请参考 [jm-server](https://github.com/jm-root/jm-server/tree/master/packages/jm-server)
+
+--
 
 ### jm-acl
 
@@ -31,11 +53,15 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 |user_role|"user"|登录用户角色|
 |default_allow|false|允许访问未登记的资源或权限|
 
+--
+
 ### jm-acl-mq
 
 | 配置项 | 默认值 | 描述 |
 | :-: | :-: | :-: |
 |gateway|"http://gateway"|Gateway服务器Uri| jm-acl-mq 使用
+
+--
 
 ### jm-server-jaeger
 
@@ -43,6 +69,8 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 | :-: | :-: | :-: |
 |service_name|"acl"| 链路追踪登记的服务名称 |
 |jaeger| |jaeger服务器Uri| 链路追踪服务器
+
+---
 
 ## Features
 
@@ -52,6 +80,8 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 
 - 存储 redis 
 
+--
+
 ## RBAC3
 
 带有角色继承的RBAC
@@ -60,11 +90,15 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 
 图片来自Apache Directory
 
+--
+
 ## RBAC3+
 
 带有资源继承的RBAC3
 
 ![](http://static.jamma.cn/images/rbac3+.svg)
+
+--
 
 ### 权限 Permissions
 
@@ -77,6 +111,8 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
   ]
 
 ```
+
+--
 
 ### 资源 Resources
 
@@ -94,9 +130,12 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
   ]
 ```
 
+--
+
 ### 角色 Roles
 
 ```
+
   [ 
     {
       'id': 'guest', 'title': '访客', 'description': '访客',
@@ -112,6 +151,8 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
   ]
 ```
 
+--
+
 ### 用户 Users
 
 ```
@@ -120,6 +161,8 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
     ...
   ]
 ```
+
+---
 
 ## 实现原理
 
@@ -131,13 +174,13 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 
 1. 如果角色变化，基于node-acl库的memoryBackend，动态生成node-acl的实例acl
 
-
+--
 
 ### 关键流程图
 
 ![](http://static.jamma.cn/images/acl_flowsheet.svg)
 
-
+---
 
 ## 模块
 
@@ -147,7 +190,7 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 
 - 主入口 main
 
-
+---
 
 ## 常见使用场景
 
@@ -158,7 +201,7 @@ docker run -d name acl  -e redis=redis://localhost jamma/acl
 
 1. 自定义角色，用户把自己拥有的权限分配给自定义的角色
 
-
+--
 
 ### ACL管理用户
 
@@ -174,7 +217,7 @@ get /acl/isAllowed {user: '326482', resource: '/sso', permissions: ['get']}
 
 ```
 
-
+--
 
 ### ACL不管理用户
 
@@ -188,7 +231,7 @@ get /acl/areAnyRolesAllowed {roles: ['admin'], resource: '/sso', permissions: ['
 
 ```
 
-
+--
 
 ### 自定义角色
 
